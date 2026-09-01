@@ -1,0 +1,15 @@
+/**:
+  ros__parameters:
+    clockwise_rotation_deg: 90.0
+    max_angular_speed: 0.60
+    min_angular_speed: 0.10
+    yaw_kp: 1.40
+    yaw_tolerance_deg: 1.50
+    settle_samples: 5
+    ready_timeout_sec: 25.0
+    motion_timeout_sec: 10.0
+    head_pan_rad: 0.0
+    head_tilt_rad: 0.25
+    head_motion_sec: 1.5
+    head_tilt_tolerance_rad: 0.05
+    result_path: /opt/erc_ws/src/ku_sparcy_erc/day1_result.json

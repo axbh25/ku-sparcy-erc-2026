@@ -1,0 +1,32 @@
+# ROS 2 / colcon generated directories
+build/
+install/
+log/
+
+# Python generated files
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Editor and OS files
+.vscode/
+.idea/
+*~
+.DS_Store
+
+# Day 1 runtime measurements
+src/ku_sparcy_erc/day1_result.json
+src/ku_sparcy_erc/day1_result.json.tmp
+
+# Runtime scoring images: keep directories, not generated frames
+/erc_images/*
+!/erc_images/.gitkeep
+/src/ku_sparcy_erc/erc_images/*
+!/src/ku_sparcy_erc/erc_images/.gitkeep
+
+# Local diagnostics are intentionally not committed
+/team_docs/day_logs/day1_diagnostics_*.txt
+
+# Python runtime bytecode
+__pycache__/
+*.py[cod]
