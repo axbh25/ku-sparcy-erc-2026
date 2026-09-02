@@ -1,0 +1,59 @@
+/**:
+  ros__parameters:
+    # Required inputs are supplied by solution.launch.py.
+    phase1_fast_start: true
+    enable_motion: true
+
+    # Frozen Day 1 opening-controller baseline.
+    clockwise_rotation_deg: 90.0
+    max_angular_speed: 0.60
+    min_angular_speed: 0.10
+    yaw_kp: 1.40
+    yaw_tolerance_deg: 1.50
+    settle_samples: 5
+    ready_timeout_sec: 25.0
+    motion_timeout_sec: 10.0
+    head_pan_rad: 0.0
+    head_tilt_rad: 0.25
+    head_motion_sec: 1.5
+    head_tilt_tolerance_rad: 0.05
+
+    # CPU-only live RGB marker perception.
+    perception_enabled: true
+    process_rate_hz: 12.0
+    roi_top_fraction: 0.04
+    roi_bottom_fraction: 0.68
+    dark_threshold: 115
+    min_bright_ring_fraction: 0.48
+    min_neutral_dark_fraction: 0.65
+    min_classifier_confidence: 0.58
+    min_classifier_margin: 0.015
+
+    # Temporal confidence filter: never accept a one-frame guess.
+    confirmation_frames: 3
+    confirmation_window_sec: 0.75
+    confirmation_min_span_sec: 0.04
+    confirmation_average_confidence: 0.62
+    target_stale_timeout_sec: 1.0
+    post_turn_detection_timeout_sec: 6.0
+    publish_period_sec: 0.20
+    result_hold_sec: 0.30
+
+    # Orientation-independent search mode (phase1_fast_start:=false).
+    general_search_angular_speed: 0.40
+    general_search_timeout_sec: 25.0
+    general_search_max_sweep_deg: 390.0
+    general_align_kp: 0.0025
+    general_align_max_speed: 0.25
+    general_align_min_speed: 0.07
+    general_align_tolerance_px: 30.0
+    general_align_settle_samples: 4
+
+    # Runtime files remain inside the team's bind-mounted source package.
+    result_path: /opt/erc_ws/src/ku_sparcy_erc/day2_result.json
+    image_output_dir: /opt/erc_ws/src/ku_sparcy_erc/erc_images
+
+    # Test-only option. Competition default stays false so we do not wait for
+    # all five numbers once the requested target is confirmed.
+    validation_require_all_markers: false
+    validation_all_markers_timeout_sec: 6.0

@@ -18,6 +18,12 @@ log/
 src/ku_sparcy_erc/day1_result.json
 src/ku_sparcy_erc/day1_result.json.tmp
 
+# Day 2 runtime measurements
+src/ku_sparcy_erc/day2_result*.json
+src/ku_sparcy_erc/day2_result*.json.tmp
+/src/ku_sparcy_erc/day2_results/*
+!/src/ku_sparcy_erc/day2_results/.gitkeep
+
 # Runtime scoring images: keep directories, not generated frames
 /erc_images/*
 !/erc_images/.gitkeep
@@ -26,6 +32,7 @@ src/ku_sparcy_erc/day1_result.json.tmp
 
 # Local diagnostics are intentionally not committed
 /team_docs/day_logs/day1_diagnostics_*.txt
+/team_docs/day_logs/day2_diagnostics_*.txt
 
 # Python runtime bytecode
 __pycache__/
