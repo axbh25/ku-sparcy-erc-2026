@@ -6,7 +6,7 @@ package_name = 'ku_sparcy_erc'
 
 setup(
     name=package_name,
-    version='0.2.0',
+    version='0.3.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -29,8 +29,10 @@ setup(
         'console_scripts': [
             # Frozen Day 1 regression executable.
             'opening_sequence = ku_sparcy_erc.opening_sequence:main',
-            # Day 2 competition entry node.
+            # Frozen Day 2 perception/search executable.
             'mission_start = ku_sparcy_erc.mission_start:main',
+            # Day 3 competition entry executable.
+            'day3_mission = ku_sparcy_erc.day3_mission:main',
         ],
     },
 )

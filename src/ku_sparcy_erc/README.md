@@ -1,108 +1,127 @@
 # `ku_sparcy_erc`
 
-KU SPARCy's ROS 2 Humble solution package for the Emirates Robotics Competition
-2026 library-assistant task.
+KU SPARCy's ROS 2 Humble solution package for ERC 2026.
 
-## Entry point
+## Competition entry point
 
 ```bash
 ros2 launch ku_sparcy_erc solution.launch.py \
   shelf_column_number:=2 book_colour:=red
 ```
 
-Required arguments:
+The default performs:
 
-- `shelf_column_number`: requested marker label, integer 1–5.
-- `book_colour`: `red`, `green`, `yellow`, or `blue`.
+```text
+validated Phase-1 opening
+  -> continuous Day-2 marker confirmation
+  -> official Int32 publication + target-column image
+  -> CameraInfo/depth/TF target geometry
+  -> front-LiDAR-constrained holonomic approach
+  -> controlled stand-off + quantitative image/JSON evidence
+```
 
-Useful Day 2 arguments:
+## Day 3 sensor interfaces
 
-- `phase1_fast_start:=true`: validated closed-loop clockwise 90-degree opening
-  maneuver while perception runs continuously.
-- `phase1_fast_start:=false`: orientation-independent visual search and marker
-  alignment for later physical testing.
-- `result_path:=...`: atomic JSON validation output.
-- `image_output_dir:=...`: live annotated-image directory.
-- `validation_require_all_markers:=true`: test-only; confirms 1–5 and waits for
-  the complete left-to-right order. The competition default is `false`, so the
-  robot does not wait after the requested marker is reliable.
+Subscriptions added by `day3_mission.py`:
 
-## Day 2 architecture
-
-`mission_start.py` owns the opening/search state machine and ROS interfaces.
-`marker_detector.py` is ROS-independent and implements the deterministic CPU
-pipeline:
-
-1. Inspect the upper RGB region for dark connected components.
-2. Require a bright marker-plate neighbourhood.
-3. Normalize each candidate glyph.
-4. Compare HOG, normalized-pixel, and contour-shape features against augmented
-   official 1–5 marker textures installed by `erc_description`.
-5. Suppress overlapping duplicates.
-6. Confirm a digit only after spatially consistent observations in at least
-   three distinct frames within the configured simulation-time window.
-
-The randomized marker order is never read from Gazebo state. The official
-textures are used only as visual templates; classification is applied to live
-camera pixels.
-
-## ROS interfaces
-
-Subscriptions:
-
-- `/clock` (`rosgraph_msgs/msg/Clock`)
-- `/odom` (`nav_msgs/msg/Odometry`)
-- `/joint_states` (`sensor_msgs/msg/JointState`)
-- `/head_front_camera/head_front_camera/color/image_raw`
+- `/head_front_camera/head_front_camera/color/camera_info`
+  (`sensor_msgs/msg/CameraInfo`)
+- `/head_front_camera/head_front_camera/depth/image_rect_raw`
   (`sensor_msgs/msg/Image`)
+- `/head_front_camera/head_front_camera/depth/camera_info`
+  (`sensor_msgs/msg/CameraInfo`)
+- `/scan_front_raw` (`sensor_msgs/msg/LaserScan`)
+- TF from the depth optical and front-LiDAR frames to `base_footprint`
 
-Publications:
+The point-cloud reconstruction is not required. The official RGB/depth streams
+are matched and the raw depth image is sufficient for marker-centred range.
+
+Publications remain:
 
 - `/cmd_vel` (`geometry_msgs/msg/Twist`)
 - `/head_controller/joint_trajectory`
-  (`trajectory_msgs/msg/JointTrajectory`)
 - `/erc/shelf_column_identification` (`std_msgs/msg/Int32`)
-- `/ku_sparcy/mission_status` (`std_msgs/msg/String`)
-- `/ku_sparcy/marker_debug` (`std_msgs/msg/String`)
+- `/ku_sparcy/mission_status`
+- `/ku_sparcy/marker_debug`
+- `/ku_sparcy/approach_debug`
 
+## Bearing and range
 
-## Column-result interpretation
+For target pixel `u`, the RGB optical bearing is:
 
-The current Phase 1 document specifies an `Int32` containing the shelf column
-number but does not separately define a message for the physical left-to-right
-index of a randomized marker. The competition node therefore publishes the
-visually confirmed requested marker label (1–5), matching the literal example.
-For navigation and organizer clarification, the result JSON also records the
-bounding box and, when all five markers are visible in validation mode,
-`target_column_index_left_to_right`.
+```text
+bearing_right = atan2(u - cx, fx)
+```
 
-## Runtime evidence
+The RGB bounding box is mapped into depth pixels through the two CameraInfo
+models. Valid depth values are filtered to 0.2–8.0 m, the nearest coherent
+surface is selected with a lower-quantile foreground band, and median/MAD
+filtering rejects edge outliers. The selected optical point is:
 
-Default outputs:
+```text
+Xright = (u - cx) * Z / fx
+Ydown  = (v - cy) * Z / fy
+Zfront = Z
+```
 
-- `day2_result.json`
-- `erc_images/shelf_column_<digit>_sim_<time>_utc_<time>.png`
-- optional matrix outputs under `day2_results/`
+A live TF transform converts that point into `base_footprint`, where +x is
+forward and +y is left. The planar base bearing is `atan2(y, x)`.
 
-The annotated target-column image contains the target bounding box, target number,
-confidence, confirming-frame count, simulation timestamp, UTC wall timestamp,
-robot yaw, and state. Generated results and images are ignored by Git.
+## LiDAR safety and controller
+
+Every valid `/scan_front_raw` ray is transformed to `base_footprint`. Only
+points ahead of the robot and within a 0.38 m half-width swept corridor are
+retained. The 10th-percentile forward distance supplies robust clearance; a
+three-point cluster inside 0.72 m triggers an immediate zero-velocity safety
+hold.
+
+The controller commands bounded `linear.x`, `linear.y`, and `angular.z`
+simultaneously. A target to the left produces positive lateral strafe. Yaw
+control holds the validated post-opening shelf-facing heading, so TIAGo reaches
+an edge column without finishing at a diagonal shelf angle. Forward speed is
+reduced by target-bearing magnitude and LiDAR clearance. Stale vision, depth, LiDAR, synchronization,
+or TF never permits blind translation.
+
+## Test modes
+
+```bash
+# Bearing/depth/LiDAR only after the normal opening and target detection
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=3 book_colour:=red \
+  approach_motion_enabled:=false
+
+# Slow, deliberately short approach
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=3 book_colour:=red \
+  approach_distance_limit_m:=0.45 \
+  approach_max_forward_speed_mps:=0.15
+
+# Frozen Day 2 full Phase-1 regression
+ros2 launch ku_sparcy_erc day2_regression.launch.py \
+  shelf_column_number:=3 book_colour:=red
+```
+
+## Runtime artifacts
+
+- `day3_result*.json`: atomic quantitative result.
+- `erc_images/shelf_column_...png`: inherited live Day-2 identification image.
+- `erc_images/shelf_approach_column_...png`: final live range/stand-off image.
+- `day3_results/*.json`: ignored regression results.
+
+All runtime images and JSON files are ignored by Git.
 
 ## Validation
 
 ```bash
-# Official asset/dependency smoke test
-python3 tools/test_marker_detector_assets.py
-
-# One result
-python3 tools/validate_day2_result.py day2_result.json \
-  --target 2 --mode fast
-
-# Full nine-case headless matrix
-./tools/run_day2_matrix.sh
-./tools/summarize_day2_results.py
+python3 tools/test_day3_geometry.py
+python3 tools/day3_interface_probe.py
+./tools/day3_ros_healthcheck.sh
+python3 tools/validate_day3_result.py day3_result.json \
+  --target 3 --mode full --min-travel-m 0.75
+./tools/run_day3_small_regression.sh
+python3 tools/summarize_day3_results.py --expected-count 2
 ```
 
-`opening_sequence.py` and `config/opening_sequence.yaml` remain the frozen Day 1
-regression fixture. Motion timeouts continue to use Gazebo simulation time;
-wall time is recorded separately.
+The Day 1 four-file fixture and the Day 2 detector, mission node, configuration,
+and validators are frozen and checked against commit
+`8c921d7ec228297efe683f7eb973ecb55973eaf0`.

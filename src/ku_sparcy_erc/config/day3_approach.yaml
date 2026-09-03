@@ -1,0 +1,78 @@
+/**:
+  ros__parameters:
+    # Day 3 execution mode. The competition default performs the full approach.
+    approach_motion_enabled: true
+    approach_distance_limit_m: 0.0
+    approach_result_hold_sec: 0.35
+
+    # A wall-time watchdog only detects a completely stalled simulator. All
+    # robot-control, tracking, hold, and mission deadlines below use /clock.
+    clock_stall_wall_timeout_sec: 20.0
+
+    # Day-3-only shelf-viewing head pose, applied after the
+    # validated Day 1 / Day 2 opening.
+    approach_head_tilt_rad: 0.35
+    approach_head_motion_sec: 0.80
+    approach_head_position_tolerance_rad: 0.05
+    approach_head_ready_timeout_sec: 3.0
+
+    # Collision-safe navigation travel pose. These are the arm-only
+    # components of PAL's official spherical-wrist home pose, validated
+    # stationary before Day 3 integration. Torso and grippers are untouched.
+    travel_arm_motion_sec: 5.0
+    travel_arm_position_tolerance_rad: 0.05
+    travel_arm_ready_timeout_sec: 8.0
+
+    # Raw aligned depth.
+    # The official head RGB and depth streams are 640x360
+    # with matched FoV, so no reconstructed point cloud is needed on Day 3.
+    depth_min_m: 0.2
+    depth_max_m: 8.0
+    depth_min_valid_pixels: 20
+    depth_min_valid_fraction: 0.08
+    max_rgb_depth_stamp_skew_sec: 0.20
+    depth_stale_timeout_sec: 0.55
+
+    # Front-LiDAR base-frame swept-body corridor.
+    lidar_corridor_half_width_m: 0.38
+    lidar_robust_percentile: 10.0
+    lidar_min_corridor_points: 4
+    lidar_hard_cluster_points: 3
+    lidar_stale_timeout_sec: 0.55
+    lidar_slowdown_m: 1.50
+    lidar_hard_stop_m: 0.72
+    lidar_hard_release_m: 0.82
+    lidar_command_margin_m: 0.12
+
+    # Conservative Day 3 holonomic approach. ROS base convention:
+    # +x forward, +y left, +yaw counter-clockwise.
+    approach_standoff_m: 1.05
+    approach_max_forward_speed_mps: 0.30
+    approach_min_forward_speed_mps: 0.06
+    approach_max_lateral_speed_mps: 0.14
+    approach_max_yaw_speed_radps: 0.20
+    approach_forward_kp: 0.45
+    approach_lateral_kp: 0.75
+    approach_yaw_kp: 0.90
+    approach_lateral_deadband_m: 0.025
+    approach_yaw_deadband_deg: 1.5
+    approach_max_planar_speed_mps: 0.32
+    approach_linear_accel_limit_mps2: 0.80
+    approach_yaw_accel_limit_radps2: 1.00
+
+    # Simulation-time deadlines and final stand-off envelope.
+    approach_timeout_sec: 30.0
+    target_recovery_timeout_sec: 2.0
+    sensor_hold_timeout_sec: 2.0
+    safety_hold_timeout_sec: 2.5
+    final_depth_tolerance_m: 0.12
+    final_lidar_min_m: 0.82
+    final_lidar_max_m: 1.18
+    final_lateral_tolerance_m: 0.12
+    final_bearing_tolerance_deg: 4.0
+    final_heading_tolerance_deg: 3.0
+    final_settle_samples: 6
+
+    # Quantitative validation trace, sampled in simulation time.
+    trace_period_sec: 0.20
+    max_trace_samples: 500

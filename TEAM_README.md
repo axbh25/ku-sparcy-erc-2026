@@ -9,22 +9,27 @@ ros2 launch ku_sparcy_erc solution.launch.py \
   shelf_column_number:=2 book_colour:=red
 ```
 
-## Implemented through Day 2
+## Implemented through Day 3
 
-- Day 1 regression fixture: odometry-controlled clockwise 90-degree opening
-  turn, upward head motion, live RGB verification, and simulation-clock timing.
-- Day 2 competition entry node: continuous RGB shelf-marker perception during
-  motion, official-texture shape classification, multi-frame confirmation,
-  publication to `/erc/shelf_column_identification`, and a live timestamped
-  annotated target-column image under `src/ku_sparcy_erc/erc_images/`.
-- `phase1_fast_start:=true` preserves the validated Phase 1 opening maneuver.
-- `phase1_fast_start:=false` performs an orientation-independent clockwise
-  visual sweep and aligns the camera with the confirmed requested marker.
+- **Day 1 frozen regression:** odometry-controlled clockwise 90-degree Phase-1
+  opening, upward head motion, live RGB validation, and simulation-clock timing.
+- **Day 2 frozen perception core:** deterministic live shelf-marker recognition,
+  multi-frame confirmation, publication to `/erc/shelf_column_identification`,
+  timestamped target-column evidence, and orientation-independent visual search.
+- **Day 3 shelf approach:** actual CameraInfo intrinsics, aligned raw-depth
+  sampling, TF projection into `base_footprint`, independent front-LiDAR swept
+  corridor safety, and bounded simultaneous forward/lateral/yaw control to a
+  deliberate stand-off distance.
 
-The solution reads only live robot topics and public model assets. It does not
-read the randomized Gazebo entity names/order, change official competition
-files, or modify the robot model, controllers, world, ROS distribution, or
-Gazebo version.
+The Day 3 node subclasses the committed Day 2 `MissionStart` class; it does not
+replace or duplicate the validated marker detector. Motion, sensor freshness,
+and recovery deadlines use Gazebo `/clock`. Wall time is recorded separately
+and used only for startup/stall watchdogs.
+
+No competition code reads `ERC_SEED`, randomized Gazebo entity names/order,
+world poses, or expected-layout files. No official world, robot model,
+controller, Docker file, Gazebo version, ROS distribution, arm, gripper, or torso
+behavior is modified.
 
 See [`src/ku_sparcy_erc/README.md`](src/ku_sparcy_erc/README.md) for interfaces,
-parameters, validation commands, and generated artifacts.
+parameters, validation modes, and runtime artifacts.
