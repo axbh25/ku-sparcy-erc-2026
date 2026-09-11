@@ -1,6 +1,6 @@
 # `ku_sparcy_erc`
 
-KU SPARCy's ROS 2 Humble solution package for ERC 2026.
+ROS 2 Humble solution package for KU SPARCy's ERC 2026 entry.
 
 ## Competition entry point
 
@@ -9,119 +9,105 @@ ros2 launch ku_sparcy_erc solution.launch.py \
   shelf_column_number:=2 book_colour:=red
 ```
 
-The default performs:
+## Revised Day 4 row-perception flow
 
 ```text
-validated Phase-1 opening
-  -> continuous Day-2 marker confirmation
-  -> official Int32 publication + target-column image
-  -> CameraInfo/depth/TF target geometry
-  -> front-LiDAR-constrained holonomic approach
-  -> controlled stand-off + quantitative image/JSON evidence
+Day 2 requested marker confirmation
+  -> Day 3 locks the physical column once
+  -> both validated navigation arms become ready
+  -> Day 4 holds the base stationary before translation
+  -> bounded, settled head poses observe the selected column
+  -> independent RGB/depth/TF colour tracks accumulate in odometry
+  -> colour-to-row map locks without a single-frame requirement
+  -> requested row is published
+  -> head returns to and verifies Day 3 +0.35 rad pose
+  -> unchanged Day 3 odometry/LiDAR approach starts
+  -> requested colour only is reacquired at final stand-off
+  -> live target-book image and synchronized 3-D geometry
+  -> non-executing one-arm pre-grasp screen
 ```
 
-## Day 3 sensor interfaces
+The detector thresholds are unchanged.  Mapping is disabled while Day 3 is
+translating; the retired moving-head scheduler fails closed through deprecated
+tools.
 
-Subscriptions added by `day3_mission.py`:
+## Required stationary visibility calibration
 
-- `/head_front_camera/head_front_camera/color/camera_info`
-  (`sensor_msgs/msg/CameraInfo`)
-- `/head_front_camera/head_front_camera/depth/image_rect_raw`
-  (`sensor_msgs/msg/Image`)
-- `/head_front_camera/head_front_camera/depth/camera_info`
-  (`sensor_msgs/msg/CameraInfo`)
-- `/scan_front_raw` (`sensor_msgs/msg/LaserScan`)
-- TF from the depth optical and front-LiDAR frames to `base_footprint`
-
-The point-cloud reconstruction is not required. The official RGB/depth streams
-are matched and the raw depth image is sufficient for marker-centred range.
-
-Publications remain:
-
-- `/cmd_vel` (`geometry_msgs/msg/Twist`)
-- `/head_controller/joint_trajectory`
-- `/erc/shelf_column_identification` (`std_msgs/msg/Int32`)
-- `/ku_sparcy/mission_status`
-- `/ku_sparcy/marker_debug`
-- `/ku_sparcy/approach_debug`
-
-## Bearing and range
-
-For target pixel `u`, the RGB optical bearing is:
+The YAML initially contains:
 
 ```text
-bearing_right = atan2(u - cx, fx)
+preapproach_scan_calibrated: false
 ```
 
-The RGB bounding box is mapped into depth pixels through the two CameraInfo
-models. Valid depth values are filtered to 0.2–8.0 m, the nearest coherent
-surface is selected with a lower-quantile foreground band, and median/MAD
-filtering rejects edge outliers. The selected optical point is:
-
-```text
-Xright = (u - cx) * Z / fx
-Ydown  = (v - cy) * Z / fy
-Zfront = Z
-```
-
-A live TF transform converts that point into `base_footprint`, where +x is
-forward and +y is left. The planar base bearing is `atan2(y, x)`.
-
-## LiDAR safety and controller
-
-Every valid `/scan_front_raw` ray is transformed to `base_footprint`. Only
-points ahead of the robot and within a 0.38 m half-width swept corridor are
-retained. The 10th-percentile forward distance supplies robust clearance; a
-three-point cluster inside 0.72 m triggers an immediate zero-velocity safety
-hold.
-
-The controller commands bounded `linear.x`, `linear.y`, and `angular.z`
-simultaneously. A target to the left produces positive lateral strafe. Yaw
-control holds the validated post-opening shelf-facing heading, so TIAGo reaches
-an edge column without finishing at a diagonal shelf angle. Forward speed is
-reduced by target-bearing magnitude and LiDAR clearance. Stale vision, depth, LiDAR, synchronization,
-or TF never permits blind translation.
-
-## Test modes
+Run the selected-column profile before Day 3 translation:
 
 ```bash
-# Bearing/depth/LiDAR only after the normal opening and target detection
 ros2 launch ku_sparcy_erc solution.launch.py \
-  shelf_column_number:=3 book_colour:=red \
-  approach_motion_enabled:=false
-
-# Slow, deliberately short approach
-ros2 launch ku_sparcy_erc solution.launch.py \
-  shelf_column_number:=3 book_colour:=red \
-  approach_distance_limit_m:=0.45 \
-  approach_max_forward_speed_mps:=0.15
-
-# Frozen Day 2 full Phase-1 regression
-ros2 launch ku_sparcy_erc day2_regression.launch.py \
-  shelf_column_number:=3 book_colour:=red
+  shelf_column_number:=5 book_colour:=red \
+  day4_stop_after:=preapproach_visibility \
+  result_path:=/opt/erc_ws/src/ku_sparcy_erc/day4_preapproach_profile.json
 ```
 
-## Runtime artifacts
+Analyze it strictly:
 
-- `day3_result*.json`: atomic quantitative result.
-- `erc_images/shelf_column_...png`: inherited live Day-2 identification image.
-- `erc_images/shelf_approach_column_...png`: final live range/stand-off image.
-- `day3_results/*.json`: ignored regression results.
+```bash
+python3 tools/analyze_day4_preapproach_scan.py \
+  day4_preapproach_profile.json \
+  --output day4_results/preapproach_analysis.json
+```
 
-All runtime images and JSON files are ignored by Git.
+Apply only the measured minimal pose sequence:
+
+```bash
+python3 tools/apply_day4_preapproach_scan.py \
+  day4_results/preapproach_analysis.json \
+  config/day4_books.yaml
+```
+
+The apply tool changes only the calibration flag and competition head sequence;
+it verifies that every `book_min_*` detector threshold is byte-for-byte
+unchanged.
+
+## Safe Day 4 modes
+
+```bash
+# Experimental stationary profile; stops before Day 3 translation
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=5 book_colour:=red \
+  day4_stop_after:=preapproach_visibility
+
+# Row mapping, publication, unchanged Day 3 approach and target reacquisition
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=5 book_colour:=red \
+  day4_stop_after:=perception
+
+# Add synchronized close-range target-book geometry
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=5 book_colour:=red \
+  day4_stop_after:=geometry
+
+# Add non-executing arm reach screen
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=5 book_colour:=red \
+  day4_stop_after:=pregrasp
+```
+
+## Runtime evidence
+
+The result records pose-wise visibility, settled head state, base drift,
+zero/nonzero base commands during scan, raw per-colour observations, spatial
+track support, row-lock and first-publication timestamps, Day 3 approach start,
+head restoration, fallback use, requested-colour reacquisition, depth/TF book
+geometry, and non-executing arm selection.
 
 ## Validation
 
 ```bash
-python3 tools/test_day3_geometry.py
-python3 tools/day3_interface_probe.py
-./tools/day3_ros_healthcheck.sh
-python3 tools/validate_day3_result.py day3_result.json \
-  --target 3 --mode full --min-travel-m 0.75
-./tools/run_day3_small_regression.sh
-python3 tools/summarize_day3_results.py --expected-count 2
+python3 tools/test_day4_book_perception.py
+python3 tools/test_day4_preapproach_tools.py
+python3 tools/validate_day4_result.py day4_result.json \
+  --target 5 --colour red --expected-row 3 \
+  --mode pregrasp --require-preapproach-lock --require-zero-holds
+./tools/run_day4_small_regression.sh
+python3 tools/summarize_day4_results.py --expected-count 2
 ```
-
-The Day 1 four-file fixture and the Day 2 detector, mission node, configuration,
-and validators are frozen and checked against commit
-`8c921d7ec228297efe683f7eb973ecb55973eaf0`.

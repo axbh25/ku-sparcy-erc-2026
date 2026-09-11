@@ -1,6 +1,6 @@
 # KU SPARCy — Emirates Robotics Competition 2026
 
-Private development repository for Khalifa University's KU SPARCy team.
+Independent KU SPARCy development repository.
 
 ## Required evaluation command
 
@@ -9,27 +9,30 @@ ros2 launch ku_sparcy_erc solution.launch.py \
   shelf_column_number:=2 book_colour:=red
 ```
 
-## Implemented through Day 3
+## Implemented through revised Day 4
 
-- **Day 1 frozen regression:** odometry-controlled clockwise 90-degree Phase-1
-  opening, upward head motion, live RGB validation, and simulation-clock timing.
-- **Day 2 frozen perception core:** deterministic live shelf-marker recognition,
-  multi-frame confirmation, publication to `/erc/shelf_column_identification`,
-  timestamped target-column evidence, and orientation-independent visual search.
-- **Day 3 shelf approach:** actual CameraInfo intrinsics, aligned raw-depth
-  sampling, TF projection into `base_footprint`, independent front-LiDAR swept
-  corridor safety, and bounded simultaneous forward/lateral/yaw control to a
-  deliberate stand-off distance.
+- Frozen Day 1 closed-loop Phase-1 opening.
+- Frozen Day 2 continuous shelf-marker perception and official column result.
+- Frozen Day 3 early dual-arm navigation tuck, one-time physical-column lock,
+  locked-column odometry/LiDAR approach, near-shelf lateral-only gate, and safe
+  final stand-off.
+- Day 4 now intercepts the boundary immediately before Day 3 translation.  Once
+  the physical column is locked and both travel arms are ready, the base is held
+  stationary while a bounded head scan accumulates independent red, green,
+  yellow, and blue RGB/depth/TF tracks in odometry.
+- No camera frame must contain all four colours.  Median odometry-frame height
+  determines active rows 1–4 from top to bottom.
+- The requested row is published before translation, the validated Day 3
+  `+0.35 rad` head pose is restored and verified, and the unchanged Day 3
+  approach then starts.
+- At final stand-off, only the requested colour is reacquired near its locked row
+  for synchronized raw-depth geometry and a non-executing one-arm reach screen.
+- The old moving-head-during-approach scheduler is disabled.  Close-range
+  multi-pose mapping remains recovery-only.
+- A separate manually gated position-controlled grasp laboratory remains
+  excluded from `solution.launch.py`.
 
-The Day 3 node subclasses the committed Day 2 `MissionStart` class; it does not
-replace or duplicate the validated marker detector. Motion, sensor freshness,
-and recovery deadlines use Gazebo `/clock`. Wall time is recorded separately
-and used only for startup/stall watchdogs.
-
-No competition code reads `ERC_SEED`, randomized Gazebo entity names/order,
-world poses, or expected-layout files. No official world, robot model,
-controller, Docker file, Gazebo version, ROS distribution, arm, gripper, or torso
-behavior is modified.
-
-See [`src/ku_sparcy_erc/README.md`](src/ku_sparcy_erc/README.md) for interfaces,
-parameters, validation modes, and runtime artifacts.
+No competition runtime code reads `ERC_SEED`, Gazebo entity names, randomized
+spawn order, expected layouts, or world state.  Day 3 RGB/depth limits remain
+0.20 s maximum skew and 0.55 s freshness.  No artificial effort command
+interface is added.

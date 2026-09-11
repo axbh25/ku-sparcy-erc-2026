@@ -1,0 +1,138 @@
+/**:
+  ros__parameters:
+    # Competition default after the stationary scan has been calibrated:
+    # publish the target row, complete unchanged Day 3 navigation, reacquire
+    # only the requested colour at final stand-off, estimate synchronized 3-D
+    # geometry, and create a non-executing pre-grasp reachability screen.
+    day4_stop_after: pregrasp
+    book_perception_enabled: true
+
+    # The competition path is intentionally locked until a real selected-column
+    # stationary visibility profile has passed.  The calibration tool changes
+    # only this flag and the competition head-pose sequence; it never changes
+    # HSV thresholds or Day 3 parameters.
+    preapproach_scan_calibrated: true
+
+    # Experimental profile sequence.  It runs only after:
+    #   1) the requested physical column is locked,
+    #   2) both navigation arms are in the validated travel pose, and
+    #   3) the base is explicitly held stationary.
+    # Every pose must physically settle before any mapping frame is accepted.
+    # Day-4-only override of the inherited Day 3 head target.
+    # 0.35 rad exceeds head_2_joint's 0.34907 hard limit;
+    # 0.25 rad is inside the 0.27907 soft upper limit.
+    approach_head_tilt_rad: 0.25
+
+    preapproach_scan_profile_head_tilt_sequence_rad: [0.25, 0.10, -0.10]
+
+    # Placeholder competition sequence.  Replace it only through the strict
+    # analyzer/apply tools after the profile has demonstrated enough independent
+    # colour support.  The scanner may finish early when all four spatial tracks
+    # have already locked.
+    preapproach_scan_head_tilt_sequence_rad: [0.25]
+
+    # Empirical Day 4 evidence showed that a 0.25 rad transition could consume
+    # about 5.8 simulation seconds before the next settled pose was usable.  The
+    # timeouts below therefore permit the complete stationary transition rather
+    # than cancelling it because Day 3 translation is progressing concurrently.
+    preapproach_scan_head_motion_sec: 0.80
+    preapproach_scan_head_ready_timeout_sec: 14.0
+    preapproach_scan_head_tolerance_rad: 0.06
+    preapproach_scan_settle_samples: 4
+    preapproach_scan_min_dwell_sec: 0.90
+    preapproach_scan_min_frames_per_pose: 4
+    preapproach_scan_pose_timeout_sec: 3.50
+    preapproach_scan_total_timeout_sec: 50.0
+    preapproach_scan_restore_timeout_sec: 14.0
+    preapproach_scan_base_translation_tolerance_m: 0.03
+    preapproach_scan_base_yaw_tolerance_deg: 2.0
+
+    # Mapping frame rate and bounded evidence storage.  Mapping occurs only in
+    # the settled stationary dwell state; it is disabled throughout Day 3
+    # translation.
+    passive_mapping_process_period_sec: 0.12
+    passive_mapping_max_samples: 650
+
+    # Deprecated compatibility fields from the failed moving-head-during-
+    # approach experiment.  The Day 4 implementation ignores these for motion
+    # and permanently reports moving_head_during_approach_enabled=false.
+    passive_mapping_window_calibrated: false
+    passive_mapping_start_clearance_m: 2.80
+    passive_mapping_stop_clearance_m: 1.55
+    visibility_profile_start_clearance_m: 3.20
+    visibility_profile_stop_clearance_m: 1.08
+    visibility_profile_bin_width_m: 0.25
+    passive_mapping_head_motion_enabled: false
+    passive_mapping_head_tilt_sequence_rad: [0.35, 0.10, -0.10]
+    passive_mapping_head_dwell_sec: 0.90
+    passive_mapping_head_restore_margin_m: 0.18
+    passive_mapping_head_tolerance_rad: 0.06
+
+    # Dynamic selected-column ROI.  Its centre follows the one-time locked
+    # physical column bearing.  No shelf-number re-identification is used after
+    # lock.
+    book_column_physical_width_m: 0.78
+    book_column_roi_min_half_width_px: 40
+    book_column_roi_max_half_width_px: 150
+    book_mapping_max_column_lateral_error_m: 0.48
+
+    # PRESERVED detector thresholds.  The redesign changes observation timing
+    # and spatial accumulation only; do not tune these because of the failed
+    # moving-head schedule.
+    book_min_saturation: 90
+    book_min_value: 55
+    book_min_area_px: 18
+    book_min_height_px: 12
+    book_min_vertical_aspect: 1.20
+    book_min_fill_fraction: 0.22
+    book_min_colour_purity: 0.55
+    book_min_detection_confidence: 0.58
+    book_min_row_separation_px: 18.0
+
+    # Independent per-colour 3-D tracks.  No frame is required to contain all
+    # four books.  Row order is determined from median odometry-frame height.
+    book_map_frames_per_colour: 3
+    book_map_min_span_sec: 0.05
+    book_map_average_confidence: 0.60
+    book_map_cluster_xy_radius_m: 0.18
+    book_map_cluster_z_radius_m: 0.10
+    book_map_track_xy_span_m: 0.18
+    book_map_track_z_span_m: 0.10
+    book_map_min_row_separation_m: 0.14
+    book_map_max_row_separation_m: 0.55
+
+    # Close-range fallback is retained only as recovery.  It remains stationary
+    # and accumulates independent colours across poses; it never restores a
+    # brittle all-four-in-one-frame requirement.
+    fallback_scan_total_timeout_sec: 15.0
+    fallback_scan_pose_timeout_sec: 2.8
+    fallback_head_tilt_sequence_rad: [0.20, 0.00, -0.20, -0.40, -0.60]
+
+    # At final Day 3 stand-off, reacquire only the requested colour near the
+    # already locked row and odometry-frame 3-D point.
+    target_head_motion_sec: 0.80
+    target_head_ready_timeout_sec: 7.5
+    target_head_tolerance_rad: 0.05
+    target_reacquisition_pose_timeout_sec: 3.2
+    target_reacquisition_total_timeout_sec: 14.0
+    target_reacquisition_frames: 3
+    target_reacquisition_window_sec: 0.90
+    target_reacquisition_min_span_sec: 0.05
+    target_reacquisition_max_xy_error_m: 0.18
+    target_reacquisition_max_z_error_m: 0.12
+    target_reacquisition_max_pixel_jump_px: 50.0
+    target_reacquisition_average_confidence: 0.60
+
+    # Day 3's maximum RGB/depth skew (0.20 s) and depth stale limit (0.55 s)
+    # remain inherited and unchanged.
+    book_depth_min_valid_pixels: 12
+    book_depth_min_valid_fraction: 0.12
+    book_geometry_timeout_sec: 2.0
+
+    # Geometry-only candidate for the separate manually gated grasp laboratory.
+    pregrasp_offset_m: 0.18
+    tentative_grasp_offset_m: 0.025
+    retreat_offset_m: 0.30
+    pregrasp_min_reach_m: 0.20
+    pregrasp_max_reach_m: 1.10
+    book_result_hold_sec: 0.35

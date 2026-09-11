@@ -1,0 +1,47 @@
+/**:
+  ros__parameters:
+    # The staged grasp laboratory is never the default competition entry point.
+    # It starts only from a passed Day 4 perception/geometry result and pauses
+    # before every manipulation stage for explicit operator approval.
+    source_result_path: /opt/erc_ws/src/ku_sparcy_erc/day4_result_full_gui.json
+    grasp_result_path: /opt/erc_ws/src/ku_sparcy_erc/day4_grasp_result.json
+    image_output_dir: /opt/erc_ws/src/ku_sparcy_erc/erc_images
+    target_stage: lift
+    manual_approval_required: true
+
+    # Wall time is used only for development interaction/readiness and a fully
+    # stalled simulator. Robot motion and settling use Gazebo /clock.
+    manual_approval_wall_timeout_sec: 600.0
+    clock_stall_wall_timeout_sec: 20.0
+    ready_wall_timeout_sec: 40.0
+
+    # One-arm joint-trajectory execution. The other arm remains in the Day 3
+    # PAL spherical-home navigation pose and the torso remains untouched.
+    joint_position_tolerance_rad: 0.045
+    joint_settle_samples: 3
+    pregrasp_motion_sec: 4.0
+    no_contact_motion_sec: 2.0
+    contact_motion_sec: 1.5
+    extract_motion_sec: 2.0
+    lift_motion_sec: 2.0
+    stage_timeout_margin_sec: 2.5
+
+    # Public clamped POSITION interface only. 0.069 is the published upper
+    # bound, so the laboratory never commands 0.070 or the *_raw topic.
+    gripper_open_position_m: 0.040
+    gripper_close_positions_m: [0.018, 0.014, 0.010]
+    gripper_motion_sec: 1.05
+    gripper_hold_sec: 1.0
+
+    # Independent abort and geometry bounds. The Day 3 base remains stationary.
+    front_clearance_abort_m: 0.70
+    lidar_corridor_half_width_m: 0.38
+    lidar_robust_percentile: 10.0
+    lidar_hard_cluster_points: 3
+    source_pose_tolerance_m: 0.035
+    source_yaw_tolerance_deg: 2.0
+    pregrasp_offset_m: 0.18
+    no_contact_offset_m: 0.070
+    grasp_insertion_depth_m: 0.020
+    extract_distance_m: 0.10
+    lift_distance_m: 0.02
