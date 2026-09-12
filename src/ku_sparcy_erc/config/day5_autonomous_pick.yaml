@@ -1,0 +1,48 @@
+/**:
+  ros__parameters:
+    # Reuse the manually validated Day 4 stage sequence without operator gates.
+    manual_approval_required: false
+    target_stage: lift
+
+    # Preserve every validated Day 4 manipulation value.
+    joint_position_tolerance_rad: 0.045
+    joint_settle_samples: 3
+    pregrasp_motion_sec: 4.0
+    no_contact_motion_sec: 2.0
+    contact_motion_sec: 1.5
+    extract_motion_sec: 2.0
+    lift_motion_sec: 2.0
+    stage_timeout_margin_sec: 2.5
+
+    # Public clamped position interface only.
+    gripper_open_position_m: 0.040
+    gripper_close_positions_m: [0.018, 0.014, 0.010]
+    gripper_motion_sec: 1.05
+    gripper_hold_sec: 1.0
+
+    # Day 4 safety and source-pose consistency.
+    front_clearance_abort_m: 0.70
+    lidar_corridor_half_width_m: 0.38
+    lidar_robust_percentile: 10.0
+    lidar_hard_cluster_points: 3
+    source_pose_tolerance_m: 0.035
+    source_yaw_tolerance_deg: 2.0
+    pregrasp_offset_m: 0.18
+    no_contact_offset_m: 0.070
+    grasp_insertion_depth_m: 0.020
+    extract_distance_m: 0.10
+    lift_distance_m: 0.02
+
+    # Automatic post-lift retention gate.
+    retention_verify_sec: 0.80
+    retention_contact_stale_sec: 0.35
+    retention_min_contact_messages: 3
+    retention_max_gripper_position_m: 0.045
+
+    # Live requested-colour evidence near the projected selected gripper.
+    # These are the validated Day 4 book thresholds, not a new tuning pass.
+    retention_visual_frames: 3
+    retention_visual_radius_px: 110.0
+    book_min_saturation: 90
+    book_min_value: 55
+    book_min_area_px: 18

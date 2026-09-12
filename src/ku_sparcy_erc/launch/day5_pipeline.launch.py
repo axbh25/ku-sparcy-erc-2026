@@ -1,4 +1,4 @@
-"""Competition-development entry point through autonomous Day 5 pick."""
+"""Development pipeline through autonomous Day 5 pick."""
 from ku_sparcy_erc.pipeline_launch_support import generate_pipeline_description
 
 

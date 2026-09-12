@@ -315,6 +315,16 @@ def screen_joint_path(
     minimum_body_margin = math.inf
     maximum_tip_x = -math.inf
 
+    # The validated compact travel pose can place a moving arm-link origin
+    # inside this deliberately coarse torso cylinder.  During the first
+    # pregrasp transition, allow that already-existing overlap to egress,
+    # but never allow it to become materially worse and require it to clear
+    # before the pregrasp target is reached.
+    pregrasp_initial_overlaps = set()
+    pregrasp_initial_margins = {}
+    pregrasp_cleared_overlaps = set()
+    previous_body_margins = {}
+
     for sample_index, sample in enumerate(path):
         positions = dict(fixed_positions)
         positions.update({name: float(value) for name, value in zip(names, sample)})
@@ -337,9 +347,43 @@ def screen_joint_path(
             body_margin = radial - body_keepout_radius_m
             if float(point[0]) <= body_keepout_x_max_m:
                 minimum_body_margin = min(minimum_body_margin, body_margin)
-                if point_index >= 2 and body_margin < -0.015:
-                    violations.append(
-                        f'{stage}: moving arm entered torso keepout at sample {sample_index}')
+
+                if point_index >= 2:
+                    normal_limit = -0.015
+
+                    if (
+                        stage == 'pregrasp'
+                        and sample_index == 0
+                        and body_margin < normal_limit
+                    ):
+                        pregrasp_initial_overlaps.add(point_index)
+                        pregrasp_initial_margins[point_index] = body_margin
+
+                    elif (
+                        stage == 'pregrasp'
+                        and point_index in pregrasp_initial_overlaps
+                        and point_index not in pregrasp_cleared_overlaps
+                    ):
+                        initial_margin = pregrasp_initial_margins[point_index]
+
+                        if body_margin >= normal_limit:
+                            pregrasp_cleared_overlaps.add(point_index)
+                        elif body_margin < initial_margin - 0.003:
+                            violations.append(
+                                f'{stage}: existing torso overlap exceeded '
+                                f'3 mm bounded egress allowance at sample '
+                                f'{sample_index}')
+                    elif body_margin < normal_limit:
+                        violations.append(
+                            f'{stage}: moving arm entered torso keepout '
+                            f'at sample {sample_index}')
+
+                previous_body_margins[point_index] = body_margin
+            elif (
+                stage == 'pregrasp'
+                and point_index in pregrasp_initial_overlaps
+            ):
+                pregrasp_cleared_overlaps.add(point_index)
             # Last two arm joint origins may approach the shelf, but the wrist
             # and proximal links must retain a margin.  The grasping-link tip is
             # treated separately below.
@@ -356,6 +400,17 @@ def screen_joint_path(
             violations.append(f'{stage}: tip crossed no-contact book surface')
         if stage == 'grasp' and float(tip[0]) > float(surface[0]) + 0.065:
             violations.append('grasp: insertion exceeds bounded 65 mm depth')
+
+    if stage == 'pregrasp':
+        uncleared = (
+            pregrasp_initial_overlaps
+            - pregrasp_cleared_overlaps
+        )
+        for point_index in sorted(uncleared):
+            violations.append(
+                'pregrasp: existing torso keepout overlap '
+                f'did not clear for arm point {point_index}'
+            )
 
     if math.isinf(minimum_shelf_margin):
         minimum_shelf_margin = 0.0

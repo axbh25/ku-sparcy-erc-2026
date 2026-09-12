@@ -59,3 +59,6 @@ src/ku_sparcy_erc/day4_grasp_result*.json.tmp
 /src/ku_sparcy_erc/day4_grasp_results/*
 !/src/ku_sparcy_erc/day4_grasp_results/.gitkeep
 /team_docs/day_logs/day4_diagnostics_*.txt
+/src/ku_sparcy_erc/home_pose.json
+/src/ku_sparcy_erc/day5_result*.json
+/src/ku_sparcy_erc/day5_results/*.json

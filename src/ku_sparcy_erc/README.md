@@ -111,3 +111,13 @@ python3 tools/validate_day4_result.py day4_result.json \
 ./tools/run_day4_small_regression.sh
 python3 tools/summarize_day4_results.py --expected-count 2
 ```
+
+## Day 5 autonomous pick
+
+```bash
+ros2 launch ku_sparcy_erc day5_pipeline.launch.py \
+  shelf_column_number:=5 book_colour:=blue
+```
+
+The launch records live home odometry, runs the frozen Day 4 pre-grasp path,
+executes the tested grasp automatically and verifies post-lift retention.

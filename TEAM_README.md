@@ -36,3 +36,13 @@ No competition runtime code reads `ERC_SEED`, Gazebo entity names, randomized
 spawn order, expected layouts, or world state.  Day 3 RGB/depth limits remain
 0.20 s maximum skew and 0.55 s freshness.  No artificial effort command
 interface is added.
+
+## Implemented through Day 5
+
+- The manually validated Day 4 one-arm grasp is now executed autonomously from
+  the same live world state.
+- Public position-only gripper topics remain mandatory; no raw or effort command
+  is used.
+- The validated 0.10 m extraction and 0.02 m lift are preserved.
+- Post-lift retention requires recent fingertip contact, a closed gripper state,
+  zero premature fingertip contacts and zero non-fingertip arm contacts.
