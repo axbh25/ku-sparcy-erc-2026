@@ -6,7 +6,7 @@ package_name = 'ku_sparcy_erc'
 
 setup(
     name=package_name,
-    version='0.6.0',
+    version='0.7.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
@@ -31,6 +31,7 @@ setup(
             'home_pose_recorder = ku_sparcy_erc.home_pose_recorder:main',
             'day5_autonomous_pick = ku_sparcy_erc.day5_autonomous_pick:main',
             'day6_return_home = ku_sparcy_erc.day6_return_home:main',
+            'day7_bin_approach = ku_sparcy_erc.day7_bin_approach:main',
         ],
     },
 )

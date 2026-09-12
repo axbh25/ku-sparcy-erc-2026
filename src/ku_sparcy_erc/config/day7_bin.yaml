@@ -1,0 +1,81 @@
+/**:
+  ros__parameters:
+    ready_wall_timeout_sec: 45.0
+    clock_stall_wall_timeout_sec: 20.0
+
+    # Base remains stationary during this head-only live RGB-D search.
+    # All tilts stay below the head_2_joint 0.34907 rad upper hard limit.
+    head_search_poses_pan_tilt_rad: [
+      0.00, -0.15,
+      0.70, -0.20,
+     -0.70, -0.20,
+      0.00, -0.35
+    ]
+    head_motion_sec: 2.5
+    head_settle_tolerance_rad: 0.05
+    head_settle_samples: 4
+    head_pose_timeout_sec: 7.0
+    head_dwell_sec: 1.0
+
+    # Separate collection-bin detector; Day 4 book thresholds remain untouched.
+    bin_confirm_frames: 3
+    bin_confirm_window_sec: 0.90
+    bin_center_tolerance_px: 42.0
+    bin_min_saturation: 110
+    bin_min_value: 55
+    bin_min_area_px: 450
+    bin_min_width_px: 34
+    bin_min_height_px: 18
+    bin_min_aspect_ratio: 1.10
+    bin_min_fill_fraction: 0.30
+
+    max_rgb_depth_stamp_skew_sec: 0.20
+    depth_stale_timeout_sec: 0.55
+    depth_min_valid_pixels: 18
+    depth_min_valid_fraction: 0.10
+
+    # Base-to-bin distance must also clear the forward extent of the held book.
+    bin_min_standoff_m: 0.85
+    carried_book_clearance_margin_m: 0.18
+    bin_max_standoff_m: 1.25
+    final_distance_tolerance_m: 0.12
+    final_lateral_tolerance_m: 0.12
+    final_bearing_tolerance_deg: 5.0
+    final_settle_samples: 5
+
+    max_forward_speed_mps: 0.18
+    max_lateral_speed_mps: 0.10
+    max_yaw_speed_radps: 0.22
+    forward_kp: 0.45
+    lateral_kp: 0.65
+    yaw_kp: 0.85
+    approach_timeout_sec: 18.0
+
+    front_hard_stop_m: 0.55
+    lidar_corridor_half_width_m: 0.42
+    lidar_robust_percentile: 10.0
+    lidar_hard_cluster_points: 3
+    scan_stale_timeout_sec: 0.60
+
+    gripper_hold_position_m: 0.010
+    gripper_hold_period_sec: 0.20
+    retention_contact_stale_sec: 0.80
+
+    # Physically validated high/compact held-book carry.
+    carry_raise_distance_m: 0.16
+    carry_retract_distance_m: 0.12
+    carry_raise_motion_sec: 4.0
+    carry_raise_joint_tolerance_rad: 0.045
+    carry_raise_settle_samples: 3
+    carry_raise_timeout_sec: 8.0
+    carry_raise_max_joint_delta_rad: 0.45
+
+    # Rotate in place toward the LIVE locked bin before translation.
+    preapproach_align_max_yaw_speed_radps: 0.10
+    preapproach_align_tolerance_deg: 2.0
+    preapproach_align_settle_samples: 5
+    preapproach_align_timeout_sec: 15.0
+
+    # Aligned approach may reverse straight if initially too close.
+    max_reverse_speed_mps: 0.10
+    aligned_approach_max_yaw_speed_radps: 0.10

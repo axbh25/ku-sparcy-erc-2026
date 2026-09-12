@@ -132,3 +132,14 @@ ros2 launch ku_sparcy_erc day6_pipeline.launch.py \
 The robot retreats with the selected arm held at the validated lift pose, checks
 the held-book swept radius before rotating and returns to recorded live home
 odometry using front/rear LiDAR and continuous position hold.
+
+## Day 7 red-bin approach
+
+```bash
+ros2 launch ku_sparcy_erc solution.launch.py \
+  shelf_column_number:=5 book_colour:=blue
+```
+
+The full competition entry now autonomously picks, returns to the recorded start
+zone, detects the red collection bin from RGB-D and stops at a held-book-aware
+placement-ready stand-off.  No placement is attempted before Day 8.

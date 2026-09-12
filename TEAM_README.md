@@ -55,3 +55,13 @@ interface is added.
   returns to a safe point inside the recorded Start/End Zone.
 - Front and rear LiDAR, odometry, contact monitoring and continuous public
   position hold remain active throughout the carry.
+
+## Implemented through Day 7
+
+- The large red collection bin is detected from live RGB-D without world/entity
+  lookup or seed-dependent behavior.
+- The held target book is rejected as a narrow/small distractor and through the
+  selected-gripper image exclusion region.
+- Bin position is locked through raw depth, camera intrinsics, TF and odometry.
+- The robot stops at a placement-ready stand-off enlarged by the carried book
+  envelope.  Premature /bin_contacts is treated as failure; placement is Day 8.
