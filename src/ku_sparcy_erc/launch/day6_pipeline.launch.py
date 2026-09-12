@@ -1,4 +1,4 @@
-"""Competition-development entry point through retained-book Day 6 return."""
+"""Development pipeline through retained-book Day 6 return."""
 from ku_sparcy_erc.pipeline_launch_support import generate_pipeline_description
 
 

@@ -140,14 +140,28 @@ def meaningful_robot_collision(name: str) -> bool:
 
     Wheel-ground contacts are intentionally excluded.  Collision names are used
     only as direct contact-sensor evidence, never as a hidden object-pose oracle.
+
+    ``base_link`` must be scoped to the TIAGo model because arena objects such
+    as books also contain names like ``book_base_link``.
     """
     text = str(name)
-    tokens = (
-        'arm_left_', 'arm_right_',
-        'gripper_left_', 'gripper_right_',
-        'torso_', 'base_link', 'head_',
+
+    robot_link_tokens = (
+        'arm_left_',
+        'arm_right_',
+        'gripper_left_',
+        'gripper_right_',
+        'torso_',
+        'head_',
     )
-    return any(token in text for token in tokens)
+
+    if any(token in text for token in robot_link_tokens):
+        return True
+
+    return (
+        text.startswith('tiago_pro::base_link::')
+        or '::tiago_pro::base_link::' in text
+    )
 
 
 def any_token(text: str, tokens: Iterable[str]) -> bool:

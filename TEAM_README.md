@@ -46,3 +46,12 @@ interface is added.
 - The validated 0.10 m extraction and 0.02 m lift are preserved.
 - Post-lift retention requires recent fingertip contact, a closed gripper state,
   zero premature fingertip contacts and zero non-fingertip arm contacts.
+
+## Implemented through Day 6
+
+- A stable initial odometry pose is recorded before mission motion.
+- The retained book is included in the base-rotation swept-radius calculation.
+- The robot retreats straight away from the shelf, verifies clearance, and
+  returns to a safe point inside the recorded Start/End Zone.
+- Front and rear LiDAR, odometry, contact monitoring and continuous public
+  position hold remain active throughout the carry.

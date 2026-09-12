@@ -121,3 +121,14 @@ ros2 launch ku_sparcy_erc day5_pipeline.launch.py \
 
 The launch records live home odometry, runs the frozen Day 4 pre-grasp path,
 executes the tested grasp automatically and verifies post-lift retention.
+
+## Day 6 retained-book return
+
+```bash
+ros2 launch ku_sparcy_erc day6_pipeline.launch.py \
+  shelf_column_number:=5 book_colour:=blue
+```
+
+The robot retreats with the selected arm held at the validated lift pose, checks
+the held-book swept radius before rotating and returns to recorded live home
+odometry using front/rear LiDAR and continuous position hold.

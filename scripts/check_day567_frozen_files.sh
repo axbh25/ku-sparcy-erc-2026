@@ -9,7 +9,6 @@ FILES=(
   src/ku_sparcy_erc/ku_sparcy_erc/marker_detector.py
   src/ku_sparcy_erc/ku_sparcy_erc/day3_mission.py
   src/ku_sparcy_erc/ku_sparcy_erc/range_fusion.py
-  src/ku_sparcy_erc/ku_sparcy_erc/day4_mission.py
   src/ku_sparcy_erc/ku_sparcy_erc/book_perception.py
   src/ku_sparcy_erc/ku_sparcy_erc/passive_book_mapping.py
   src/ku_sparcy_erc/ku_sparcy_erc/urdf_kinematics.py
@@ -47,6 +46,19 @@ else
   printf 'expected: %s\nactual:   %s\n' \
     "$APPROVED_DAY5_PLANNER_BLOB" \
     "$ACTUAL_PLANNER_BLOB"
+  FAIL=1
+fi
+
+DAY4_MISSION="src/ku_sparcy_erc/ku_sparcy_erc/day4_mission.py"
+APPROVED_DAY6_DAY4_MISSION_BLOB="d1e5cf6753d8c5b25ee76a52a3477c4366983cb4"
+ACTUAL_DAY4_MISSION_BLOB="$(git hash-object "$DAY4_MISSION")"
+
+if [ "$ACTUAL_DAY4_MISSION_BLOB" = "$APPROVED_DAY6_DAY4_MISSION_BLOB" ]; then
+  echo '[DAY6 APPROVED DAY4 MISSION][PASS]'
+else
+  echo '[DAY6 APPROVED DAY4 MISSION][FAIL]'
+  echo "expected=$APPROVED_DAY6_DAY4_MISSION_BLOB"
+  echo "actual=$ACTUAL_DAY4_MISSION_BLOB"
   FAIL=1
 fi
 

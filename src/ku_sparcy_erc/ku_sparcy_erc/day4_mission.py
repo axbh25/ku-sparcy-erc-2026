@@ -1769,8 +1769,11 @@ class Day4Mission(Day3Mission):
             and abs(float(self.actual_head_tilt) - target)
             <= self.target_head_tolerance_rad
         )
-        frames_ok = self.camera_frames_total >= self.target_head_frames_at_command + 2
-        if position_ok and frames_ok:
+        # Head settling is a joint-state condition.  Fresh RGB evidence is
+        # enforced by the following REACQUIRE_TARGET_BOOK state, so requiring
+        # additional camera frames here can falsely reject a correctly settled
+        # head when the rendered camera is temporarily delayed.
+        if position_ok:
             self.target_head_pose_started_sim_sec = self.sim_time_sec
             if self.target_reacquisition_filter is not None:
                 self.target_reacquisition_filter.reset()

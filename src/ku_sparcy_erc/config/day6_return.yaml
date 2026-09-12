@@ -1,0 +1,44 @@
+/**:
+  ros__parameters:
+    ready_wall_timeout_sec: 45.0
+    clock_stall_wall_timeout_sec: 20.0
+
+    # First move the complete carried-book envelope away from the shelf.
+    retreat_distance_m: 0.55
+    retreat_speed_mps: 0.16
+    rotation_clearance_margin_m: 0.20
+    retreat_timeout_sec: 10.0
+
+    # Stop safely inside, but before the centre of, the 0.8 x 0.8 m start zone.
+    home_stop_offset_m: 0.28
+    home_position_tolerance_m: 0.10
+    home_settle_samples: 5
+    return_timeout_sec: 25.0
+
+    turn_yaw_tolerance_deg: 2.0
+    turn_settle_samples: 4
+    max_turn_speed_radps: 0.32
+    turn_kp: 1.2
+    turn_timeout_sec: 12.0
+
+    max_forward_speed_mps: 0.28
+    max_lateral_speed_mps: 0.14
+    max_planar_speed_mps: 0.30
+    drive_position_kp: 0.55
+    drive_yaw_kp: 0.90
+    drive_yaw_tolerance_deg: 6.0
+
+    rear_hard_stop_m: 0.55
+    front_hard_stop_m: 0.55
+    scan_stale_timeout_sec: 0.60
+    lidar_corridor_half_width_m: 0.42
+    lidar_robust_percentile: 10.0
+    lidar_hard_cluster_points: 3
+
+    # Continue the validated public position hold while carrying.
+    gripper_hold_position_m: 0.010
+    gripper_hold_period_sec: 0.20
+    retention_contact_stale_sec: 0.80
+
+    source_pose_tolerance_m: 0.05
+    source_yaw_tolerance_deg: 3.0

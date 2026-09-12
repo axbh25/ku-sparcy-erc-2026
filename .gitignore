@@ -62,3 +62,5 @@ src/ku_sparcy_erc/day4_grasp_result*.json.tmp
 /src/ku_sparcy_erc/home_pose.json
 /src/ku_sparcy_erc/day5_result*.json
 /src/ku_sparcy_erc/day5_results/*.json
+/src/ku_sparcy_erc/day6_result*.json
+/src/ku_sparcy_erc/day6_results/*.json
