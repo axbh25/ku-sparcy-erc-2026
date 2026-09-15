@@ -31,7 +31,7 @@
     depth_min_valid_pixels: 20
     depth_min_valid_fraction: 0.08
     max_rgb_depth_stamp_skew_sec: 0.20
-    depth_stale_timeout_sec: 0.55
+    depth_stale_timeout_sec: 0.80
 
     # Front-LiDAR base-frame swept-body corridor.
     lidar_corridor_half_width_m: 0.38
@@ -63,7 +63,7 @@
     # Simulation-time deadlines and final stand-off envelope.
     approach_timeout_sec: 30.0
     target_recovery_timeout_sec: 2.0
-    sensor_hold_timeout_sec: 2.0
+    sensor_hold_timeout_sec: 4.0
     safety_hold_timeout_sec: 2.5
     final_depth_tolerance_m: 0.12
     final_lidar_min_m: 0.82
