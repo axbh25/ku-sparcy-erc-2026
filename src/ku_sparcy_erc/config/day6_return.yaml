@@ -36,8 +36,8 @@
     lidar_hard_cluster_points: 3
 
     # Continue the validated public position hold while carrying.
-    gripper_hold_position_m: 0.010
-    gripper_hold_period_sec: 0.20
+    gripper_hold_position_m: 0.000
+    gripper_hold_period_sec: 0.10
     retention_contact_stale_sec: 0.80
 
     source_pose_tolerance_m: 0.05

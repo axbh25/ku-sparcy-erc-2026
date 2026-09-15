@@ -32,6 +32,8 @@ setup(
             'day5_autonomous_pick = ku_sparcy_erc.day5_autonomous_pick:main',
             'day6_return_home = ku_sparcy_erc.day6_return_home:main',
             'day7_bin_approach = ku_sparcy_erc.day7_bin_approach:main',
+            'day67_fast_transport = ku_sparcy_erc.day67_fast_transport:main',
+            'day8_bin_place = ku_sparcy_erc.day8_bin_place:main',
         ],
     },
 )

@@ -1,4 +1,3 @@
-"""Competition entry: unchanged Day 4-7 pipeline, then arm-only Day 8."""
 from ku_sparcy_erc.day8_pipeline_support import generate_pipeline_description
 
 def generate_launch_description():

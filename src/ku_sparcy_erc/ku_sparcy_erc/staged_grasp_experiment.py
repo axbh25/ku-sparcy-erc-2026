@@ -93,7 +93,7 @@ class StagedGraspExperiment(Node):
         self.declare_parameter('lift_motion_sec', 2.0)
         self.declare_parameter('stage_timeout_margin_sec', 2.5)
         self.declare_parameter('gripper_open_position_m', 0.040)
-        self.declare_parameter('gripper_close_positions_m', [0.018, 0.014, 0.010])
+        self.declare_parameter('gripper_close_positions_m', [0.018, 0.014, 0.000])
         self.declare_parameter('gripper_motion_sec', 1.05)
         self.declare_parameter('gripper_hold_sec', 1.0)
         self.declare_parameter('front_clearance_abort_m', 0.70)
@@ -104,7 +104,7 @@ class StagedGraspExperiment(Node):
         self.declare_parameter('source_yaw_tolerance_deg', 2.0)
         self.declare_parameter('pregrasp_offset_m', 0.18)
         self.declare_parameter('no_contact_offset_m', 0.070)
-        self.declare_parameter('grasp_insertion_depth_m', 0.020)
+        self.declare_parameter('grasp_insertion_depth_m', 0.050)
         self.declare_parameter('extract_distance_m', 0.10)
         self.declare_parameter('lift_distance_m', 0.08)
 

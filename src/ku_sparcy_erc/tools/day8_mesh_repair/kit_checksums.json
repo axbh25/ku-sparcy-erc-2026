@@ -1,0 +1,13 @@
+{
+  "day8_mesh_core.py": "c3adbfd7bd2575b416d8001b221b3aa3923e685d26253eb2b2df6bebc8623d82",
+  "validate_mesh_result.py": "c2d2836db26f8a375b00e9b504dce3ab2c037903963328f2051b038b5c9547be",
+  "README.md": "a94ddbfe365d17f4ec308cf8858fda120a3f98a0b0b72314e96cb75e31c694de",
+  "compatibility.json": "7ab7ffda36e328034ef179217ed4082442176876799f6ded52e8a132442121e3",
+  "replay_scene.py": "c01983de8e0e6a3cf7aae175dfbd61b50416a25ae7e6e30c63f0f83a7858b321",
+  "test_runtime_guards.py": "5f4ef144da2d3867f5a4b8d027aa1e0b59bd196a13a7636ae3ac0d024da121be",
+  "verify_compatibility.py": "2a1211cd4250769f235cc1f1c2a6a7580223793a496896b88708d2b12d1be298",
+  "install.py": "fef9c1fe50b709d8bf2d41798511a5b2308d46f14f37cd8fc49c786be2b9e74b",
+  "test_repair.py": "da3ed1dbd78fa5b057a3acf40e9b3a5396f6561823e9e7dd6af6a741a7dbd821",
+  "run_trial.sh": "b35696885c0b9063c1dc3be99c99701a1d8e4fb57c58d18ea0e4e8cd26164f79",
+  "day8_mesh_node.py": "31687c64eff90db8592773ecaf6f69c492c2268bd234d3dec4f8364d16071b3d"
+}

@@ -1,0 +1,101 @@
+/**:
+  ros__parameters:
+
+    # Shelf egress.
+    retreat_distance_m: 0.55
+    retreat_max_distance_m: 0.80
+    retreat_speed_mps: 0.16
+    rotation_clearance_margin_m: 0.20
+
+    # Validated high/compact carried-book posture.
+    # Executed after shelf retreat and before any rotation.
+    carry_retract_distance_m: 0.12
+    carry_raise_distance_m: 0.16
+    carry_motion_sec: 4.0
+    carry_joint_tolerance_rad: 0.045
+    carry_settle_samples: 3
+    carry_timeout_sec: 10.0
+    carry_max_joint_delta_rad: 0.45
+
+    # Route direction is chosen by physical shelf position.
+    rotation_deg: 180.0
+    rotation_max_speed_radps: 0.10
+    rotation_kp: 0.90
+    rotation_tolerance_deg: 2.0
+    rotation_settle_samples: 4
+
+    # Side-column main return.
+    lateral_max_speed_mps: 0.08
+    lateral_accel_limit_mps2: 0.01
+    support_timeout_sec: 45.0
+    support_motion_sec: 18.0
+    support_roll_deg: 0.0
+    lateral_kp: 0.55
+    lateral_tolerance_m: 0.07
+
+    home_zone_radius_m: 0.38
+
+    # Allowed only AFTER lateral motion has stopped.
+    longitudinal_correction_max_m: 5.00
+    longitudinal_correction_speed_mps: 0.10
+
+    # Keep the existing 0.10 m/s maximum, but remove step changes in X speed.
+    longitudinal_accel_limit_mps2: 0.03
+
+    # Official base-front-laser origin is x=0.27512 m from the base.
+    # Stop early enough to protect the frontmost point of the carried book.
+    front_laser_base_x_m: 0.27512
+    carried_front_margin_m: 0.10
+
+    # Live bin placement-ready endpoint.
+    final_bin_standoff_m: 1.00
+    final_bin_forward_tolerance_m: 0.10
+    final_bin_lateral_tolerance_m: 0.08
+    final_bin_bearing_tolerance_deg: 4.0
+    final_align_translation_speed_mps: 0.08
+    final_align_yaw_speed_radps: 0.08
+    final_settle_samples: 4
+    final_home_envelope_m: 0.60
+
+    # LiDAR.
+    rear_hard_stop_m: 0.55
+    front_hard_stop_m: 0.55
+    lidar_corridor_half_width_m: 0.42
+    lidar_robust_percentile: 10.0
+    scan_stale_timeout_sec: 0.60
+
+    # Existing red-bin detector values.
+    bin_confirm_frames: 3
+    bin_confirm_window_sec: 1.00
+    bin_odom_confirm_tolerance_m: 0.18
+    bin_min_saturation: 110
+    bin_min_value: 55
+    bin_min_area_px: 450
+    bin_min_width_px: 34
+    bin_min_height_px: 18
+    bin_min_aspect_ratio: 1.10
+    bin_min_fill_fraction: 0.30
+
+    max_rgb_depth_stamp_skew_sec: 0.20
+    depth_stale_timeout_sec: 0.55
+    depth_min_valid_pixels: 18
+    depth_min_valid_fraction: 0.10
+
+    # Public POSITION only.
+    gripper_hold_position_m: 0.000
+    gripper_hold_period_sec: 0.10
+
+    # Head stays centered; base rotation performs search.
+    head_search_pan_rad: 0.0
+    head_search_tilt_rad: -0.20
+    head_motion_sec: 1.2
+
+    # Timeouts.
+    ready_wall_timeout_sec: 45.0
+    clock_stall_wall_timeout_sec: 20.0
+    retreat_timeout_sec: 20.0
+    rotation_timeout_sec: 70.0
+    lateral_timeout_sec: 60.0
+    straight_timeout_sec: 45.0
+    bin_wait_after_transit_sec: 8.0
+    final_align_timeout_sec: 25.0

@@ -66,3 +66,14 @@ src/ku_sparcy_erc/day4_grasp_result*.json.tmp
 /src/ku_sparcy_erc/day6_results/*.json
 /src/ku_sparcy_erc/day7_result*.json
 /src/ku_sparcy_erc/day7_results/*.json
+
+# Day 8 runtime evidence (source .gitkeep remains tracked)
+/src/ku_sparcy_erc/day8_results/*
+!/src/ku_sparcy_erc/day8_results/.gitkeep
+/src/ku_sparcy_erc/day8_result*.json*
+/src/ku_sparcy_erc/erc_images/day8_*.png
+
+# Local tuning/debug backups
+*.before_*
+*.bak
+src/ku_sparcy_erc/day8_results/

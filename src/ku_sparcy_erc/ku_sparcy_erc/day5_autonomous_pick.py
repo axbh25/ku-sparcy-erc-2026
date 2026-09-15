@@ -35,7 +35,7 @@ class Day5AutonomousPick(StagedGraspExperiment):
         self.declare_parameter('retention_verify_sec', 0.80)
         self.declare_parameter('retention_contact_stale_sec', 0.35)
         self.declare_parameter('retention_min_contact_messages', 3)
-        self.declare_parameter('retention_max_gripper_position_m', 0.045)
+        self.declare_parameter('retention_max_gripper_position_m', 0.020)
         self.declare_parameter('retention_visual_frames', 3)
         self.declare_parameter('retention_visual_radius_px', 110.0)
         self.declare_parameter('book_min_saturation', 90)
@@ -262,7 +262,10 @@ class Day5AutonomousPick(StagedGraspExperiment):
         checks = {
             'gripper_position_valid': (
                 isinstance(position, (int, float))
-                and 0.0 <= float(position)
+                # Gazebo/controller numerical noise can report a
+                # physically closed 0.000 m joint as a microscopic
+                # negative value such as -2.8e-15 m.
+                and -1.0e-6 <= float(position)
                 <= self.retention_max_gripper_position),
             'recent_fingertip_contact': recent_contact,
             'enough_hold_contact_messages': (

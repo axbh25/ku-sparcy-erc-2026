@@ -29,7 +29,7 @@
     # Public clamped POSITION interface only. 0.069 is the published upper
     # bound, so the laboratory never commands 0.070 or the *_raw topic.
     gripper_open_position_m: 0.040
-    gripper_close_positions_m: [0.018, 0.014, 0.010]
+    gripper_close_positions_m: [0.018, 0.014, 0.008, 0.004, 0.000]
     gripper_motion_sec: 1.05
     gripper_hold_sec: 1.0
 

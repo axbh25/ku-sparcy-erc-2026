@@ -1,0 +1,72 @@
+/**:
+  ros__parameters:
+    operation: plan
+    manual_approval_required: true
+    day7_result_path: /opt/erc_ws/src/ku_sparcy_erc/day7_result.json
+    result_path: /opt/erc_ws/src/ku_sparcy_erc/day8_result.json
+    image_output_dir: /opt/erc_ws/src/ku_sparcy_erc/erc_images
+    ready_wall_timeout_sec: 60.0
+    planning_wall_timeout_sec: 6.0
+    fast_plan_budget_sec: 3.0
+    fast_plan_joint_samples: 8
+    fast_plan_ik_iterations: 90
+
+    # Fast staged execution.
+    # Never batch preplace + lower + retract together.
+    fast_preplace_budget_sec: 4.0
+    fast_lower_budget_sec: 1.5
+    fast_stage_ik_iterations: 45
+    fast_stage_joint_samples: 7
+    fast_stage_seed_retries: 0
+    contact_stream_fresh_sec: 0.8
+    clock_stall_wall_timeout_sec: 20.0
+    approval_wall_timeout_sec: 600.0
+    joint_fresh_sec: 0.55
+    image_fresh_sec: 0.55
+    scan_fresh_sec: 0.60
+    max_rgb_depth_skew_sec: 0.20
+    tf_latest_fallback_max_sec: 0.05
+    geometry_confirm_frames: 3
+    geometry_timeout_sec: 6.0
+    base_drift_tolerance_m: 0.025
+    base_yaw_tolerance_deg: 1.5
+    retention_contact_stale_sec: 0.80
+    head_survey_pan_offsets_rad: [0.0, 0.35, -0.35, 0.55, -0.55, 0.0]
+    head_survey_tilts_rad: [-0.15, -0.25, -0.25, -0.40, -0.40, -0.55]
+    head_motion_sec: 2.5
+    head_timeout_sec: 12.0
+    head_tolerance_rad: 0.04
+    joint_tolerance_rad: 0.030
+    settle_samples: 4
+    stage_timeout_margin_sec: 4.0
+    bin_pose_drift_tolerance_m: 0.025
+    front_hard_stop_m: 0.55
+    lidar_corridor_half_width_m: 0.42
+    gripper_hold_position_m: 0.000
+    gripper_hold_period_sec: 0.10
+    gripper_retention_max_position_m: 0.020
+    gripper_release_positions_m: [0.018, 0.026, 0.034, 0.040]
+    gripper_release_step_sec: 0.80
+    gripper_open_tolerance_m: 0.007
+    placement_max_penetration_m: 0.006
+    support_confirm_sec: 0.40
+    support_fresh_sec: 0.45
+    release_verify_sec: 0.80
+    deposit_verify_sec: 2.0
+    deposit_timeout_sec: 7.0
+    fingertip_quiet_sec: 0.80
+    book_margin_m: 0.030
+    robot_margin_m: 0.008
+    rim_clearance_m: 0.085
+    cart_step_m: 0.020
+    lower_speed_mps: 0.025
+    preplace_speed_mps: 0.050
+    retract_speed_mps: 0.070
+    max_joint_speed_radps: 0.20
+    retract_away_m: 0.10
+    clear_view_back_m: 0.04
+    clear_view_lateral_m: 0.12
+    clear_view_up_m: 0.05
+    clear_view_min_cross_track_m: 0.16
+    clear_view_speed_mps: 0.035
+    clear_view_max_joint_delta_rad: 0.45

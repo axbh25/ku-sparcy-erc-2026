@@ -57,8 +57,8 @@
     lidar_hard_cluster_points: 3
     scan_stale_timeout_sec: 0.60
 
-    gripper_hold_position_m: 0.010
-    gripper_hold_period_sec: 0.20
+    gripper_hold_position_m: 0.000
+    gripper_hold_period_sec: 0.10
     retention_contact_stale_sec: 0.80
 
     # Physically validated high/compact held-book carry.
