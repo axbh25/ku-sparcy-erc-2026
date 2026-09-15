@@ -34,7 +34,7 @@
     confirmation_window_sec: 0.75
     confirmation_min_span_sec: 0.04
     confirmation_average_confidence: 0.62
-    target_stale_timeout_sec: 1.0
+    target_stale_timeout_sec: 3.0
     post_turn_detection_timeout_sec: 6.0
     publish_period_sec: 0.20
     result_hold_sec: 0.30
